@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="24 Game - A mathematical puzzle game. Use 4 numbers and basic arithmetic to make 24.">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎯</text></svg>">
+    <title>24 Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="particle-canvas"></div>
+
+    <div class="app-container">
+        <header class="game-header">
+            <div class="logo-area">
+                <h1 class="game-title">24</h1>
+                <span class="game-subtitle">Make 24!</span>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="pauseBtn" aria-label="Pause/Resume" title="Pause/Resume">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <button class="icon-btn" id="statsBtn" aria-label="Statistics" title="Statistics">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </button>
+                <button class="icon-btn" id="settingsBtn" aria-label="Settings" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="score-panel">
+            <div class="score-item">
+                <span class="score-label">Score</span>
+                <span class="score-value" id="scoreDisplay">0</span>
+            </div>
+            <div class="score-item timer-item">
+                <span class="score-label">Time</span>
+                <span class="score-value timer-value" id="timerDisplay">60</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">Streak</span>
+                <span class="score-value" id="streakDisplay">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">Best</span>
+                <span class="score-value" id="bestDisplay">0</span>
+            </div>
+        </div>
+
+        <div class="difficulty-selector">
+            <button class="diff-btn active" data-diff="easy">Easy</button>
+            <button class="diff-btn" data-diff="medium">Medium</button>
+            <button class="diff-btn" data-diff="hard">Hard</button>
+        </div>
+
+        <div class="game-area">
+            <div class="numbers-container" id="numbersContainer">
+                <div class="number-card" draggable="true" data-value="0">0</div>
+                <div class="number-card" draggable="true" data-value="0">0</div>
+                <div class="number-card" draggable="true" data-value="0">0</div>
+                <div class="number-card" draggable="true" data-value="0">0</div>
+            </div>
+
+            <div class="expression-area" id="expressionArea">
+                <div class="expression-display" id="expressionDisplay">
+                    <span class="placeholder">Click or drag numbers to build expression</span>
+                </div>
+                <div class="expression-preview" id="expressionPreview"></div>
+            </div>
+
+            <div class="operator-panel">
+                <button class="op-btn" data-op="+">+</button>
+                <button class="op-btn" data-op="-">−</button>
+                <button class="op-btn" data-op="*">×</button>
+                <button class="op-btn" data-op="/">÷</button>
+                <button class="op-btn paren-btn" data-op="(">(</button>
+                <button class="op-btn paren-btn" data-op=")">)</button>
+                <button class="op-btn clear-btn" id="clearBtn">C</button>
+                <button class="op-btn backspace-btn" id="backspaceBtn">⌫</button>
+            </div>
+
+            <div class="action-panel">
+                <button class="action-btn primary-btn" id="submitBtn">Check</button>
+                <button class="action-btn secondary-btn" id="hintBtn">Hint</button>
+                <button class="action-btn secondary-btn" id="newGameBtn">New Game</button>
+            </div>
+
+            <div class="result-display" id="resultDisplay"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="statsModal">
+            <div class="modal-header">
+                <h2>Statistics</h2>
+                <button class="modal-close" id="statsModalClose">&times;</button>
+            </div>
+            <div class="modal-body stats-body">
+                <div class="stat-row"><span>Games Played</span><span id="statGamesPlayed">0</span></div>
+                <div class="stat-row"><span>Games Won</span><span id="statGamesWon">0</span></div>
+                <div class="stat-row"><span>Win Rate</span><span id="statWinRate">0%</span></div>
+                <div class="stat-row"><span>Best Score</span><span id="statBestScore">0</span></div>
+                <div class="stat-row"><span>Longest Streak</span><span id="statLongestStreak">0</span></div>
+                <div class="stat-row"><span>Avg Time</span><span id="statAvgTime">0s</span></div>
+                <div class="stat-divider"></div>
+                <h3>Achievements</h3>
+                <div class="achievements-list" id="achievementsList"></div>
+            </div>
+        </div>
+
+        <div class="modal" id="settingsModal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close" id="settingsModalClose">&times;</button>
+            </div>
+            <div class="modal-body settings-body">
+                <div class="setting-row">
+                    <label>Timer Duration</label>
+                    <select id="timerDuration">
+                        <option value="30">30s</option>
+                        <option value="60" selected>60s</option>
+                        <option value="90">90s</option>
+                        <option value="120">120s</option>
+                        <option value="0">No Timer</option>
+                    </select>
+                </div>
+                <div class="setting-row">
+                    <label>Theme</label>
+                    <select id="themeSelect">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="neon">Neon</option>
+                    </select>
+                </div>
+                <div class="setting-row">
+                    <label>Sound Effects</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label>Particles</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="particleToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label>Confetti</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="confettiToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label>Hard Mode (only ✓)</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="hardMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="dailyModal">
+            <div class="modal-header">
+                <h2>Daily Challenge</h2>
+                <button class="modal-close" id="dailyModalClose">&times;</button>
+            </div>
+            <div class="modal-body daily-body">
+                <p id="dailyDescription">Today's puzzle:</p>
+                <div class="daily-numbers" id="dailyNumbers"></div>
+                <p id="dailyStatus"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="achievement-toast" id="achievementToast">
+        <div class="achievement-icon">🏆</div>
+        <div class="achievement-info">
+            <div class="achievement-title">Achievement Unlocked!</div>
+            <div class="achievement-name" id="achievementName"></div>
+        </div>
+    </div>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

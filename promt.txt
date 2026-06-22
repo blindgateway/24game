@@ -1,0 +1,99 @@
+Create a complete production-ready frontend-only "24 Game" web application using only HTML, CSS, and Vanilla JavaScript.
+
+Requirements:
+
+# Game Rules
+- Display 4 random numbers between 1 and 9.
+- User must create an expression using ALL 4 numbers exactly once.
+- Allowed operators: +, -, *, /, parentheses.
+- Result must equal exactly 24.
+- Validate expressions safely without using eval().
+- Show whether the answer is correct or incorrect.
+- Prevent usage of numbers not provided.
+- Prevent using any number more than once.
+
+# UI/UX Design
+- Modern 2026 glassmorphism + neumorphism hybrid design.
+- Responsive mobile-first layout.
+- Beautiful gradients and subtle animations.
+- Smooth hover effects.
+- Dark mode by default.
+- Premium gaming-style appearance.
+- Large card-based layout.
+- Numbers displayed as draggable cards.
+- Attractive score panel.
+- Timer display.
+- Streak counter.
+- Best score tracker using LocalStorage.
+- Win celebration animation.
+- Wrong answer shake animation.
+
+# Features
+- New Game button.
+- Hint button.
+- Timer countdown.
+- Score system.
+- Streak system.
+- LocalStorage persistence.
+- Keyboard shortcuts.
+- Sound effects generated with Web Audio API.
+- Confetti celebration when solved.
+- Pause/Resume timer.
+- Statistics modal.
+- Settings modal.
+- Mobile touch support.
+
+# Technical Requirements
+- No backend.
+- No frameworks.
+- No libraries.
+- Pure HTML/CSS/JavaScript only.
+- No CDN dependencies.
+- No build tools.
+- Works by opening index.html directly.
+- Clean modular code.
+- Well-commented source code.
+- Accessibility support.
+- SEO-friendly metadata.
+
+# File Structure
+
+/
+├── index.html
+├── style.css
+├── script.js
+├── assets/
+│   ├── sounds/
+│   └── icons/
+├── README.md
+
+# GitHub Ready
+- Generate complete file contents.
+- Include detailed README.md.
+- Include installation instructions.
+- Include project description.
+- Include screenshots section placeholders.
+- Include MIT License section.
+- Make repository immediately deployable on GitHub Pages.
+
+# Code Quality
+- Modern ES6+ JavaScript.
+- Avoid code duplication.
+- Use classes/modules where appropriate.
+- Follow best practices.
+- Optimize performance.
+- Include error handling.
+
+# Extra Premium Features
+- Daily Challenge mode.
+- Random Challenge mode.
+- Difficulty levels.
+- Achievement system.
+- Theme switcher.
+- Particle background.
+- Animated leaderboard mockup (frontend only).
+- PWA support with manifest.json and service-worker.js.
+
+Output every file in separate code blocks with filenames as headings.
+Do not omit any code.
+Generate a complete working project.
