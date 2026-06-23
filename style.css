@@ -895,6 +895,90 @@ body {
     animation: celebrate 0.6s ease-in-out;
 }
 
+/* Keyboard hint footer */
+.keyboard-hint {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 14px;
+    padding: 10px 12px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: var(--border-glass);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.keyboard-hint kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 1px;
+    font-family: var(--font);
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: var(--bg-glass);
+    border: var(--border-glass);
+    border-radius: 4px;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.help-body p,
+.help-body ul {
+    font-size: 0.88rem;
+    margin-bottom: 12px;
+}
+
+.help-body ul {
+    padding-left: 20px;
+}
+
+.help-body li {
+    margin-bottom: 6px;
+}
+
+.help-body h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 14px 0 8px;
+    color: var(--accent-2);
+}
+
+.help-body code {
+    padding: 1px 6px;
+    background: var(--bg-glass);
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: var(--accent-3);
+}
+
+.help-body kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    font-family: var(--font);
+    font-size: 0.82em;
+    font-weight: 700;
+    background: var(--bg-glass);
+    border: var(--border-glass);
+    border-radius: 4px;
+    color: var(--text-primary);
+}
+
+/* Number-card button reset (we use <button> for a11y) */
+button.number-card {
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: center;
+    padding: 0;
+}
+
+@media (max-width: 420px) {
+    .keyboard-hint { display: none; }
+}
+
 /* Daily Challenge */
 .daily-numbers {
     display: flex;

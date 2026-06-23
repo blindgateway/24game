@@ -814,6 +814,8 @@ class Game24 {
         this.dom.pauseBtn.addEventListener('click', () => this._togglePause());
         this.dom.statsBtn.addEventListener('click', () => this._showStats());
         this.dom.settingsBtn.addEventListener('click', () => this._showSettings());
+        if (this.dom.dailyBtn) this.dom.dailyBtn.addEventListener('click', () => this._showDaily());
+        if (this.dom.helpBtn) this.dom.helpBtn.addEventListener('click', () => this._showHelp());
 
         document.querySelectorAll('.modal-close, .modal-overlay').forEach(el => {
             el.addEventListener('click', (e) => {
@@ -1350,6 +1352,16 @@ class Game24 {
             return;
         }
 
+        if (e.key === '?') {
+            this._showHelp();
+            return;
+        }
+
+        if (e.key === 'd' || e.key === 'D') {
+            this._showDaily();
+            return;
+        }
+
         if (e.key === 'Escape') {
             this._closeModals();
             return;
@@ -1448,17 +1460,50 @@ class Game24 {
             this.dom.achievementsList.appendChild(item);
         }
 
+        this._closeModals();
         this.dom.statsModal.style.display = 'block';
         this.dom.modalOverlay.classList.add('active');
+        this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
     }
 
     _showSettings() {
+        this._closeModals();
         this.dom.settingsModal.style.display = 'block';
         this.dom.modalOverlay.classList.add('active');
+        this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    _showDaily() {
+        if (!this.dom.dailyModal) return;
+        this._closeModals();
+        const puzzle = this.daily.getPuzzle();
+        this.currentPuzzle = puzzle;
+        this.dom.dailyNumbers.innerHTML = '';
+        puzzle.numbers.forEach(n => {
+            const el = document.createElement('div');
+            el.className = 'daily-num';
+            el.textContent = n;
+            this.dom.dailyNumbers.appendChild(el);
+        });
+        this.dom.dailyStatus.textContent = this.daily.isCompleted()
+            ? '✓ Already completed today. Come back tomorrow!'
+            : 'Tap Play to start today\'s puzzle.';
+        this.dom.dailyModal.style.display = 'block';
+        this.dom.modalOverlay.classList.add('active');
+        this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    _showHelp() {
+        if (!this.dom.helpModal) return;
+        this._closeModals();
+        this.dom.helpModal.style.display = 'block';
+        this.dom.modalOverlay.classList.add('active');
+        this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
     }
 
     _closeModals() {
         this.dom.modalOverlay.classList.remove('active');
+        this.dom.modalOverlay.setAttribute('aria-hidden', 'true');
         document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
     }
 }

@@ -2,46 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="24 Game - A mathematical puzzle game. Use 4 numbers and basic arithmetic to make 24.">
-    <meta name="theme-color" content="#0a0a1a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="24 Game — a fast-paced mental math puzzle. Combine four numbers with +, −, ×, ÷ to make 24.">
+    <meta name="keywords" content="24 game, math puzzle, brain training, arithmetic, mental math">
+    <meta name="theme-color" content="#0a0a1a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f0f0f8" media="(prefers-color-scheme: light)">
+    <meta name="color-scheme" content="dark light">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="24 Game">
+    <meta name="format-detection" content="telephone=no">
+    <meta property="og:title" content="24 Game">
+    <meta property="og:description" content="Combine four numbers with arithmetic to make 24.">
+    <meta property="og:type" content="website">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎯</text></svg>">
-    <title>24 Game</title>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c5ce7'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>24</text></svg>">
+    <title>24 Game — Make 24 with four numbers</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="data:">
 </head>
 <body>
-    <div id="particle-canvas"></div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+            <symbol id="i-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+            <symbol id="i-stats" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+            <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+            <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+            <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+        </defs>
+    </svg>
+
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
     <div class="app-container">
-        <header class="game-header">
+        <header class="game-header" role="banner">
             <div class="logo-area">
                 <h1 class="game-title">24</h1>
                 <span class="game-subtitle">Make 24!</span>
             </div>
-            <div class="header-controls">
-                <button class="icon-btn" id="pauseBtn" aria-label="Pause/Resume" title="Pause/Resume">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            <nav class="header-controls" aria-label="Game controls">
+                <button type="button" class="icon-btn" id="dailyBtn" aria-label="Daily Challenge" title="Daily Challenge (D)">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg>
                 </button>
-                <button class="icon-btn" id="statsBtn" aria-label="Statistics" title="Statistics">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <button type="button" class="icon-btn" id="pauseBtn" aria-label="Pause game" aria-pressed="false" title="Pause / Resume (Space)">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pause"/></svg>
                 </button>
-                <button class="icon-btn" id="settingsBtn" aria-label="Settings" title="Settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <button type="button" class="icon-btn" id="statsBtn" aria-label="View statistics" title="Statistics">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-stats"/></svg>
                 </button>
-            </div>
+                <button type="button" class="icon-btn" id="helpBtn" aria-label="Show how to play" title="How to play (?)">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-help"/></svg>
+                </button>
+                <button type="button" class="icon-btn" id="settingsBtn" aria-label="Open settings" title="Settings">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-settings"/></svg>
+                </button>
+            </nav>
         </header>
 
-        <div class="score-panel">
+        <section class="score-panel" aria-label="Game scoreboard">
             <div class="score-item">
                 <span class="score-label">Score</span>
-                <span class="score-value" id="scoreDisplay">0</span>
+                <span class="score-value" id="scoreDisplay" aria-live="polite" aria-atomic="true">0</span>
             </div>
             <div class="score-item timer-item">
                 <span class="score-label">Time</span>
-                <span class="score-value timer-value" id="timerDisplay">60</span>
+                <span class="score-value timer-value" id="timerDisplay" aria-live="off">60</span>
             </div>
             <div class="score-item">
                 <span class="score-label">Streak</span>
@@ -51,55 +79,64 @@
                 <span class="score-label">Best</span>
                 <span class="score-value" id="bestDisplay">0</span>
             </div>
+        </section>
+
+        <div class="difficulty-selector" role="radiogroup" aria-label="Difficulty">
+            <button type="button" class="diff-btn active" data-diff="easy" role="radio" aria-checked="true">Easy</button>
+            <button type="button" class="diff-btn" data-diff="medium" role="radio" aria-checked="false">Medium</button>
+            <button type="button" class="diff-btn" data-diff="hard" role="radio" aria-checked="false">Hard</button>
         </div>
 
-        <div class="difficulty-selector">
-            <button class="diff-btn active" data-diff="easy">Easy</button>
-            <button class="diff-btn" data-diff="medium">Medium</button>
-            <button class="diff-btn" data-diff="hard">Hard</button>
-        </div>
+        <main class="game-area" id="gameArea">
+            <section class="numbers-container" id="numbersContainer" aria-label="Available numbers — drag or click to use">
+                <button type="button" class="number-card" data-value="0" draggable="true" aria-label="Number 0">0</button>
+                <button type="button" class="number-card" data-value="0" draggable="true" aria-label="Number 0">0</button>
+                <button type="button" class="number-card" data-value="0" draggable="true" aria-label="Number 0">0</button>
+                <button type="button" class="number-card" data-value="0" draggable="true" aria-label="Number 0">0</button>
+            </section>
 
-        <div class="game-area">
-            <div class="numbers-container" id="numbersContainer">
-                <div class="number-card" draggable="true" data-value="0">0</div>
-                <div class="number-card" draggable="true" data-value="0">0</div>
-                <div class="number-card" draggable="true" data-value="0">0</div>
-                <div class="number-card" draggable="true" data-value="0">0</div>
-            </div>
-
-            <div class="expression-area" id="expressionArea">
-                <div class="expression-display" id="expressionDisplay">
+            <section class="expression-area" id="expressionArea" aria-label="Expression builder">
+                <div class="expression-display" id="expressionDisplay" role="textbox" aria-readonly="true" aria-label="Current expression">
                     <span class="placeholder">Click or drag numbers to build expression</span>
                 </div>
-                <div class="expression-preview" id="expressionPreview"></div>
-            </div>
+                <div class="expression-preview" id="expressionPreview" aria-live="polite" aria-atomic="true"></div>
+            </section>
 
-            <div class="operator-panel">
-                <button class="op-btn" data-op="+">+</button>
-                <button class="op-btn" data-op="-">−</button>
-                <button class="op-btn" data-op="*">×</button>
-                <button class="op-btn" data-op="/">÷</button>
-                <button class="op-btn paren-btn" data-op="(">(</button>
-                <button class="op-btn paren-btn" data-op=")">)</button>
-                <button class="op-btn clear-btn" id="clearBtn">C</button>
-                <button class="op-btn backspace-btn" id="backspaceBtn">⌫</button>
+            <div class="operator-panel" role="toolbar" aria-label="Operators">
+                <button type="button" class="op-btn" data-op="+" aria-label="Add">+</button>
+                <button type="button" class="op-btn" data-op="-" aria-label="Subtract">−</button>
+                <button type="button" class="op-btn" data-op="*" aria-label="Multiply">×</button>
+                <button type="button" class="op-btn" data-op="/" aria-label="Divide">÷</button>
+                <button type="button" class="op-btn paren-btn" data-op="(" aria-label="Open parenthesis">(</button>
+                <button type="button" class="op-btn paren-btn" data-op=")" aria-label="Close parenthesis">)</button>
+                <button type="button" class="op-btn clear-btn" id="clearBtn" aria-label="Clear expression" title="Clear (Esc)">C</button>
+                <button type="button" class="op-btn backspace-btn" id="backspaceBtn" aria-label="Delete last token" title="Backspace">⌫</button>
             </div>
 
             <div class="action-panel">
-                <button class="action-btn primary-btn" id="submitBtn">Check</button>
-                <button class="action-btn secondary-btn" id="hintBtn">Hint</button>
-                <button class="action-btn secondary-btn" id="newGameBtn">New Game</button>
+                <button type="button" class="action-btn primary-btn" id="submitBtn" aria-keyshortcuts="Enter">Check</button>
+                <button type="button" class="action-btn secondary-btn" id="hintBtn" aria-keyshortcuts="h">Hint</button>
+                <button type="button" class="action-btn secondary-btn" id="newGameBtn" aria-keyshortcuts="n">New Game</button>
             </div>
 
-            <div class="result-display" id="resultDisplay"></div>
-        </div>
+            <div class="result-display" id="resultDisplay" role="status" aria-live="polite" aria-atomic="true"></div>
+        </main>
+
+        <footer class="keyboard-hint" aria-label="Keyboard shortcuts">
+            <span><kbd>1</kbd>–<kbd>9</kbd> numbers</span>
+            <span><kbd>+</kbd> <kbd>−</kbd> <kbd>×</kbd> <kbd>÷</kbd> ops</span>
+            <span><kbd>Enter</kbd> check</span>
+            <span><kbd>H</kbd> hint</span>
+            <span><kbd>N</kbd> new</span>
+            <span><kbd>Space</kbd> pause</span>
+        </footer>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="statsModal">
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" id="statsModal" role="document" aria-labelledby="statsModalTitle">
             <div class="modal-header">
-                <h2>Statistics</h2>
-                <button class="modal-close" id="statsModalClose">&times;</button>
+                <h2 id="statsModalTitle">Statistics</h2>
+                <button type="button" class="modal-close" id="statsModalClose" aria-label="Close statistics">&times;</button>
             </div>
             <div class="modal-body stats-body">
                 <div class="stat-row"><span>Games Played</span><span id="statGamesPlayed">0</span></div>
@@ -108,20 +145,20 @@
                 <div class="stat-row"><span>Best Score</span><span id="statBestScore">0</span></div>
                 <div class="stat-row"><span>Longest Streak</span><span id="statLongestStreak">0</span></div>
                 <div class="stat-row"><span>Avg Time</span><span id="statAvgTime">0s</span></div>
-                <div class="stat-divider"></div>
+                <div class="stat-divider" role="separator"></div>
                 <h3>Achievements</h3>
                 <div class="achievements-list" id="achievementsList"></div>
             </div>
         </div>
 
-        <div class="modal" id="settingsModal">
+        <div class="modal" id="settingsModal" role="document" aria-labelledby="settingsModalTitle">
             <div class="modal-header">
-                <h2>Settings</h2>
-                <button class="modal-close" id="settingsModalClose">&times;</button>
+                <h2 id="settingsModalTitle">Settings</h2>
+                <button type="button" class="modal-close" id="settingsModalClose" aria-label="Close settings">&times;</button>
             </div>
             <div class="modal-body settings-body">
                 <div class="setting-row">
-                    <label>Timer Duration</label>
+                    <label for="timerDuration">Timer Duration</label>
                     <select id="timerDuration">
                         <option value="30">30s</option>
                         <option value="60" selected>60s</option>
@@ -131,7 +168,7 @@
                     </select>
                 </div>
                 <div class="setting-row">
-                    <label>Theme</label>
+                    <label for="themeSelect">Theme</label>
                     <select id="themeSelect">
                         <option value="dark">Dark</option>
                         <option value="light">Light</option>
@@ -139,59 +176,81 @@
                     </select>
                 </div>
                 <div class="setting-row">
-                    <label>Sound Effects</label>
-                    <label class="toggle">
+                    <label for="soundToggle">Sound Effects</label>
+                    <label class="toggle" aria-label="Toggle sound effects">
                         <input type="checkbox" id="soundToggle" checked>
-                        <span class="slider"></span>
+                        <span class="slider" aria-hidden="true"></span>
                     </label>
                 </div>
                 <div class="setting-row">
-                    <label>Particles</label>
-                    <label class="toggle">
+                    <label for="particleToggle">Particles</label>
+                    <label class="toggle" aria-label="Toggle background particles">
                         <input type="checkbox" id="particleToggle" checked>
-                        <span class="slider"></span>
+                        <span class="slider" aria-hidden="true"></span>
                     </label>
                 </div>
                 <div class="setting-row">
-                    <label>Confetti</label>
-                    <label class="toggle">
+                    <label for="confettiToggle">Confetti</label>
+                    <label class="toggle" aria-label="Toggle confetti on win">
                         <input type="checkbox" id="confettiToggle" checked>
-                        <span class="slider"></span>
+                        <span class="slider" aria-hidden="true"></span>
                     </label>
                 </div>
                 <div class="setting-row">
-                    <label>Hard Mode (only ✓)</label>
-                    <label class="toggle">
+                    <label for="hardMode">Hard Mode (unsolvable puzzles)</label>
+                    <label class="toggle" aria-label="Toggle hard mode">
                         <input type="checkbox" id="hardMode">
-                        <span class="slider"></span>
+                        <span class="slider" aria-hidden="true"></span>
                     </label>
                 </div>
             </div>
         </div>
 
-        <div class="modal" id="dailyModal">
+        <div class="modal" id="dailyModal" role="document" aria-labelledby="dailyModalTitle">
             <div class="modal-header">
-                <h2>Daily Challenge</h2>
-                <button class="modal-close" id="dailyModalClose">&times;</button>
+                <h2 id="dailyModalTitle">Daily Challenge</h2>
+                <button type="button" class="modal-close" id="dailyModalClose" aria-label="Close daily challenge">&times;</button>
             </div>
             <div class="modal-body daily-body">
                 <p id="dailyDescription">Today's puzzle:</p>
-                <div class="daily-numbers" id="dailyNumbers"></div>
+                <div class="daily-numbers" id="dailyNumbers" aria-live="polite"></div>
                 <p id="dailyStatus"></p>
+            </div>
+        </div>
+
+        <div class="modal" id="helpModal" role="document" aria-labelledby="helpModalTitle">
+            <div class="modal-header">
+                <h2 id="helpModalTitle">How to Play</h2>
+                <button type="button" class="modal-close" id="helpModalClose" aria-label="Close help">&times;</button>
+            </div>
+            <div class="modal-body help-body">
+                <p><strong>Goal:</strong> use all four numbers exactly once with <code>+</code>, <code>−</code>, <code>×</code>, <code>÷</code>, and parentheses to make <strong>24</strong>.</p>
+                <h3>Controls</h3>
+                <ul>
+                    <li>Click or drag a number card to add it.</li>
+                    <li>Tap operators or use the keyboard.</li>
+                    <li><kbd>⌫</kbd> removes the last token, <kbd>C</kbd> clears the expression.</li>
+                </ul>
+                <h3>Scoring</h3>
+                <ul>
+                    <li>Base points scale with difficulty (Easy 100, Medium 200, Hard 400).</li>
+                    <li>Faster solves and longer streaks give bigger bonuses.</li>
+                    <li>Solve without a hint for a 30% no-hint bonus.</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div class="toast-container" id="toastContainer"></div>
-    <div class="achievement-toast" id="achievementToast">
-        <div class="achievement-icon">🏆</div>
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+    <div class="achievement-toast" id="achievementToast" role="alert" aria-live="assertive">
+        <div class="achievement-icon" aria-hidden="true">🏆</div>
         <div class="achievement-info">
             <div class="achievement-title">Achievement Unlocked!</div>
             <div class="achievement-name" id="achievementName"></div>
         </div>
     </div>
-    <div class="confetti-container" id="confettiContainer"></div>
+    <div class="confetti-container" id="confettiContainer" aria-hidden="true"></div>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
